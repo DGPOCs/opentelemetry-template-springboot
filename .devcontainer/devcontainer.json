@@ -1,0 +1,30 @@
+{
+  "name": "Weather Service",
+  "image": "mcr.microsoft.com/devcontainers/java:1-17-bullseye",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
+  },
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "java.configuration.updateBuildConfiguration": "automatic",
+        "editor.formatOnSave": true
+      },
+      "extensions": [
+        "vscjava.vscode-java-pack",
+        "vscjava.vscode-spring-initializr",
+        "vmware.vscode-boot-dev-pack",
+        "vscjava.vscode-maven"
+      ]
+    }
+  },
+  "forwardPorts": [8080, 4318],
+  "postCreateCommand": "mvn -B dependency:go-offline",
+  "remoteUser": "vscode",
+  "mounts": [
+    "source=${localEnv:HOME}/.m2,target=/home/vscode/.m2,type=bind,consistency=cached"
+  ],
+  "containerEnv": {
+    "JAVA_TOOL_OPTIONS": "-Dfile.encoding=UTF-8"
+  }
+}

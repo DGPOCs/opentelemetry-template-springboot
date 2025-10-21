@@ -29,3 +29,12 @@ logging:
   level:
     root: INFO
     com.example.weather: DEBUG
+
+telemetry:
+  mongo:
+    uri: ${MONGODB_URI:mongodb://localhost:27017}
+    database: ${MONGODB_DATABASE:telemetry}
+    logs-collection: ${MONGODB_COLLECTION_LOGS:logs}
+    traces-collection: ${MONGODB_COLLECTION_TRACES:traces}
+    metrics-collection: ${MONGODB_COLLECTION_METRICS:metrics}
+    metrics-export-interval: ${MONGODB_METRICS_EXPORT_INTERVAL:PT30S}

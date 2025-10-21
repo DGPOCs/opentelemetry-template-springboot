@@ -1,0 +1,10 @@
+.git
+.gitignore
+README.md
+LICENSE
+Dockerfile
+.devcontainer
+.mvn
+mvnw
+mvnw.cmd
+**/target/
