@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: weather-service
+
+weather:
+  api-key: ${OPENWEATHER_API_KEY:}
+  base-url: https://api.openweathermap.org/data/3.0
+  units: metric
+  language: es
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  tracing:
+    sampling:
+      probability: 1.0
+  otlp:
+    tracing:
+      endpoint: ${OTEL_EXPORTER_OTLP_TRACES_ENDPOINT:http://localhost:4318/v1/traces}
+    metrics:
+      export:
+        enabled: true
+        step: 1m
+        endpoint: ${OTEL_EXPORTER_OTLP_METRICS_ENDPOINT:http://localhost:4318/v1/metrics}
+
+logging:
+  level:
+    root: INFO
+    com.example.weather: DEBUG
