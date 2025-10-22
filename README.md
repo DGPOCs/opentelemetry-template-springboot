@@ -20,6 +20,13 @@ El servicio utiliza las siguientes propiedades (también disponibles vía variab
 | `weather.language` | — | Idioma de las respuestas. Por defecto `es`. |
 | `management.otlp.tracing.endpoint` | `OTEL_EXPORTER_OTLP_TRACES_ENDPOINT` | Endpoint OTLP para exportar trazas. |
 | `management.otlp.metrics.export.endpoint` | `OTEL_EXPORTER_OTLP_METRICS_ENDPOINT` | Endpoint OTLP para exportar métricas. |
+| `telemetry.mongo.uri` | `MONGODB_URI` | URI de conexión a MongoDB donde se guardan logs, trazas y métricas. |
+| `telemetry.mongo.database` | `MONGODB_DATABASE` | Base de datos objetivo para la telemetría. |
+| `telemetry.mongo.logs-collection` | `MONGODB_COLLECTION_LOGS` | Colección usada para almacenar logs. |
+| `telemetry.mongo.traces-collection` | `MONGODB_COLLECTION_TRACES` | Colección usada para almacenar trazas. |
+| `telemetry.mongo.metrics-collection` | `MONGODB_COLLECTION_METRICS` | Colección usada para almacenar métricas. |
+| `telemetry.mongo.metrics-export-interval` | `MONGODB_METRICS_EXPORT_INTERVAL` | Intervalo ISO-8601 para persistir métricas (por defecto `PT30S`). |
+| — | `OTEL_LOGS_EXPORTER` | Define si se exportan logs vía OTLP (`otlp`) además de MongoDB. |
 
 ## Ejecución
 
@@ -27,12 +34,20 @@ El servicio utiliza las siguientes propiedades (también disponibles vía variab
    ```bash
    export OPENWEATHER_API_KEY="tu_api_key"
    ```
-2. (Opcional) Configura los endpoints de OpenTelemetry para trazas y métricas:
+2. Configura las variables de conexión a MongoDB (si la instancia no usa los valores por defecto):
+   ```bash
+   export MONGODB_URI="mongodb://usuario:password@localhost:27017"
+   export MONGODB_DATABASE="telemetry"
+   export MONGODB_COLLECTION_LOGS="logs"
+   export MONGODB_COLLECTION_TRACES="traces"
+   export MONGODB_COLLECTION_METRICS="metrics"
+   ```
+3. (Opcional) Configura los endpoints de OpenTelemetry para trazas y métricas:
    ```bash
    export OTEL_EXPORTER_OTLP_TRACES_ENDPOINT="http://localhost:4318/v1/traces"
    export OTEL_EXPORTER_OTLP_METRICS_ENDPOINT="http://localhost:4318/v1/metrics"
    ```
-3. Compila y ejecuta la aplicación:
+4. Compila y ejecuta la aplicación:
    ```bash
    mvn spring-boot:run
    ```
@@ -58,8 +73,29 @@ La respuesta incluye:
 
 El proyecto incorpora:
 
+- Exportadores personalizados que almacenan logs, trazas y métricas directamente en MongoDB.
 - `micrometer-tracing-bridge-otel` para publicar trazas con OpenTelemetry.
 - `micrometer-registry-otlp` para exportar métricas vía OTLP.
 - Instrumentación de clientes HTTP mediante `ObservationRestTemplateCustomizer` y el ecosistema de Spring Observability.
 
 Los endpoints de Actuator expuestos incluyen `health`, `info` y `prometheus`. Ajusta la configuración de `management` según tus necesidades.
+
+## Desarrollo en Dev Container
+
+1. Instala la extensión **Dev Containers** en VS Code.
+2. Abre la carpeta del proyecto y selecciona `Dev Containers: Reopen in Container`.
+3. El entorno incluye Java 17, Maven y Docker CLI listo para construir y ejecutar contenedores.
+
+## Despliegue con Docker
+
+Para construir la imagen y ejecutar todos los servicios (aplicación, MongoDB y colector OTEL de referencia):
+
+```bash
+docker compose up --build
+```
+
+Las variables de entorno se pueden sobreescribir desde un archivo `.env` o la línea de comandos. Por defecto:
+
+- La aplicación queda disponible en `http://localhost:8080`.
+- MongoDB se expone en `mongodb://localhost:27017`.
+- El colector OTLP escucha en `http://localhost:4318`.
