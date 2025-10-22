@@ -21,6 +21,10 @@
   "forwardPorts": [8080, 4318],
   "postCreateCommand": "mvn -B dependency:go-offline",
   "remoteUser": "vscode",
+  "runArgs": [
+    "--env-file",
+    "${localWorkspaceFolder}/.env"
+  ],
   "mounts": [
     "source=${localEnv:HOME}/.m2,target=/home/vscode/.m2,type=bind,consistency=cached"
   ],
