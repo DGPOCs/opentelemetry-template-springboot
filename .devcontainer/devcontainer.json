@@ -1,6 +1,8 @@
 {
   "name": "Weather Service",
-  "image": "mcr.microsoft.com/devcontainers/java:1-17-bullseye",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
   "features": {
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
   },
