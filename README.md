@@ -10,6 +10,8 @@ Servicio backend en Spring Boot que expone un endpoint para consultar el clima u
 
 ## Configuración
 
+Todas las variables de entorno utilizadas por la aplicación y la infraestructura auxiliar se definen en el archivo `.env` de la raíz del proyecto. Puedes modificar los valores por defecto o crear una copia local del archivo si necesitas credenciales específicas.
+
 El servicio utiliza las siguientes propiedades (también disponibles vía variables de entorno):
 
 | Propiedad | Variable de entorno | Descripción |
@@ -84,7 +86,8 @@ Los endpoints de Actuator expuestos incluyen `health`, `info` y `prometheus`. Aj
 
 1. Instala la extensión **Dev Containers** en VS Code.
 2. Abre la carpeta del proyecto y selecciona `Dev Containers: Reopen in Container`.
-3. El entorno incluye Java 17, Maven y Docker CLI listo para construir y ejecutar contenedores.
+3. Las variables definidas en `.env` se cargan automáticamente dentro del contenedor de desarrollo, por lo que puedes ajustar la configuración del servicio editando ese archivo antes de reconstruirlo.
+4. El entorno incluye Java 17, Maven y Docker CLI listo para construir y ejecutar contenedores.
 
 ## Despliegue con Docker
 
@@ -94,7 +97,7 @@ Para construir la imagen y ejecutar todos los servicios (aplicación, MongoDB y 
 docker compose up --build
 ```
 
-Las variables de entorno se pueden sobreescribir desde un archivo `.env` o la línea de comandos. Por defecto:
+Las variables de entorno se cargan desde el archivo `.env`. Puedes modificarlo o exportar variables adicionales en la línea de comandos antes de ejecutar `docker compose` para sobrescribir los valores. Por defecto:
 
 - La aplicación queda disponible en `http://localhost:8080`.
 - MongoDB se expone en `mongodb://localhost:27017`.
