@@ -37,7 +37,7 @@ El servicio utiliza las siguientes propiedades (también disponibles vía variab
 2. Configura las variables de conexión a MongoDB (si la instancia no usa los valores por defecto):
    ```bash
    export MONGODB_URI="mongodb://usuario:password@localhost:27017"
-   export MONGODB_DATABASE="telemetry"
+   export MONGODB_DATABASE="openweather_telemetry"
    export MONGODB_COLLECTION_LOGS="logs"
    export MONGODB_COLLECTION_TRACES="traces"
    export MONGODB_COLLECTION_METRICS="metrics"
